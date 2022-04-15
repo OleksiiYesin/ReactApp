@@ -13,7 +13,8 @@ template:
     containers:
     - name: my-react-app
       image: yesinaleksey/reactapp:v1
----
+'''
+            yaml '''
 apiVersion: v1
 kind: Service
 metadata:
