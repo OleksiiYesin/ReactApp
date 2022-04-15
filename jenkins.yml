@@ -20,7 +20,7 @@ spec:
     stages {
         stage('Main') {
             steps {
-                sh 'npm install'
+                sh 'sudo npm install'
                 sh 'cd my-react-app && npm start'
             }
         }
