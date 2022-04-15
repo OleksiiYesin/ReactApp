@@ -3,16 +3,38 @@ pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-react-app-dep
+  namespace: jenkins
 spec:
-  containers:
-  - name: shell
-    image: yesinaleksey/reactapp:v1
-    command:
-    - sleep
-    args:
-    - infinity
+  selector:
+    matchLabels:
+      app: react-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: react-app
+    spec:
+      containers:
+        - name : react-app
+          image: yesinaleksey/reactapp:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-react-app-svc
+  namespace: jenkins
+spec:
+  type: NodePort
+  selector:
+    app: react-app
+  ports:
+    - name: my-app
+      port: 3000
+      targetPort: 3000
 '''
             defaultContainer 'shell'
         }
@@ -20,7 +42,7 @@ spec:
     stages {
         stage('Main') {
             steps {
-                sh 'docker run -p 3333:3000 yesinaleksey/reactapp:v1'
+                sh 'sleep 100'
             }
         }
     }
