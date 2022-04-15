@@ -8,7 +8,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: node:alpine
+    image: yesinaleksey/reactapp:v1
     command:
     - sleep
     args:
@@ -20,8 +20,7 @@ spec:
     stages {
         stage('Main') {
             steps {
-                sh 'sudo npm install'
-                sh 'cd my-react-app && npm start'
+                sh 'docker run -p 3333:3000 yesinaleksey/reactapp:v1'
             }
         }
     }
