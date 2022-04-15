@@ -3,16 +3,27 @@ pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: v1
-kind: Pod
-template:
-  metadata:
-    labels:
-      app: react-app
-  spec:
-    containers:
-    - name: my-react-app
-      image: yesinaleksey/reactapp:v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
 '''
             defaultContainer 'shell'
         }
@@ -20,7 +31,7 @@ template:
     stages {
         stage('Main') {
             steps {
-                sh 'sleep 100'
+                sh 'hostname'
             }
         }
     }
