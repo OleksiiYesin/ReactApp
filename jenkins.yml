@@ -3,24 +3,16 @@ pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-react-app-dep
-  namespace: jenkins
-spec:
-  selector:
-    matchLabels:
+apiVersion: v1
+kind: Pod
+template:
+  metadata:
+    labels:
       app: react-app
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: react-app
-    spec:
-      containers:
-        - name : react-app
-          image: yesinaleksey/reactapp:v1
+  spec:
+    containers:
+    - name: my-react-app
+      image: yesinaleksey/reactapp:v1
 ---
 apiVersion: v1
 kind: Service
