@@ -1,7 +1,9 @@
 pipeline {
-    agent {
-        kubernetes
-    }
+  agent {
+   kubernetes {
+    namespace 'jenkins'
+   }
+  }
     stages {
         stage('Create deployment') {
             steps {
