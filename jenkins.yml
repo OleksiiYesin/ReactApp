@@ -3,12 +3,19 @@ pipeline {
         kubernetes
     }
     stages {
-        stage('Deploy App') {
+        stage('Create deployment') {
             steps {
                 script {
-                  kubernetesDeploy(configs: "react.yml", kubeconfigId: "kubeconfig")
+                  kubernetesDeploy(configs: "deployment.yml", kubeconfigId: "kubeconfig")
                 }
             }
         }
+        stage('Create service') {
+            steps {
+                script {
+                  kubernetesDeploy(configs: "service.yml", kubeconfigId: "kubeconfig")
+                }
+            }
+        } 
     }
 }
