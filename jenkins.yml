@@ -5,11 +5,12 @@ pipeline {
    }
   }
     stages {
-        stage('Apply Kubernetes files') {
-          withKubeConfig([credentialsId: 'kubeconfig']) {
+        stage('Run pods in k8s') {
           steps {
-            sh 'kubectl run nginx-demo --image=nginx --port=80'
-          }
+            echo " ============== START PODS =================="
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+                sh 'kubectl run nginx-demo --image=nginx --port=80'
+            }
           }
         }
     }
