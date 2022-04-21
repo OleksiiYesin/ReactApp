@@ -8,7 +8,7 @@ pipeline {
         stage('Run pods in k8s') {
           steps {
             echo " ============== START PODS =================="
-            withKubeConfig([credentialsId: 'kubeconfig']) {
+            withKubeCredentials([credentialsId: 'kubeconfig']) {
                 sh 'kubectl run nginx-demo --image=nginx --port=80'
             }
           }
