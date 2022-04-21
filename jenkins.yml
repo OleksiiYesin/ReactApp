@@ -9,7 +9,7 @@ pipeline {
             steps {
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
-                    configs: 'deployments.yml',
+                    configs: 'deployment.yml',
                     enableConfigSubstitution: true
                 )
             }
