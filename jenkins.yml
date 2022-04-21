@@ -5,19 +5,10 @@ pipeline {
    }
   }
     stages {
-        stage('Create deployment') {
-            steps {
-                script {
-                  kubernetesDeploy(configs: "deployment.yml", kubeconfigId: "kubeconfig")
-                }
-            }
+        stage('Apply Kubernetes files') {
+          withKubeConfig([credentialsId: 'kubeconfig']) {
+            sh 'kubectl run nginx-demo --image=nginx --port=80'
+          }
         }
-        stage('Create service') {
-            steps {
-                script {
-                  kubernetesDeploy(configs: "service.yml", kubeconfigId: "kubeconfig")
-                }
-            }
-        } 
     }
 }
