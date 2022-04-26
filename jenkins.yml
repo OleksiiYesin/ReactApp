@@ -9,7 +9,10 @@ pipeline {
         stage('Deploy App') {
             steps {
               echo "==============DEPLOYING APPLICATION============="
-              kubernetesDeploy(configs: "react.yml", kubeconfigId: "kubeconfig")
+              withKubeConfig([credentialsId: 'kubeconfig']) {
+                 sh 'kubectl create ns react'  
+              }
+     
             }
         }
         
