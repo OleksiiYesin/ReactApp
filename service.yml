@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-react-app-svc
-  namespace: jenkins
+  name: my-js-service
 spec:
-  type: NodePort
   selector:
-    app: react-app
+    project: react
   ports:
-    - name: my-app
-      port: 3000
-      targetPort: 3000
+    - name: app-listener
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
