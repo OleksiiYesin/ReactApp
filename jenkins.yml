@@ -9,7 +9,7 @@ pipeline {
         stage('Deploy App') {
             steps {
                script {
-                 kubernetesDeploy(configs: "react.yml", kubeconfigId: "kubeconfig", enableConfigSubstitution: true)
+                 kubernetesDeploy configs: 'react.yml', kubeconfigId: 'kubeconfig'
                }     
             }
         }
