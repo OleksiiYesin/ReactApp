@@ -10,8 +10,7 @@ pipeline {
             steps {
                 withCredentials([
                     kubeconfigFile(
-                    credentialsId: kubeconfig,
-                    variable: 'KUBECONFIG')
+                    credentialsId: kubeconfig)
                 ]) {
                       sh 'kubectl apply -f react.yml -n jenkins'     
                    }
