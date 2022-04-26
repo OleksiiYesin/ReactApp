@@ -5,14 +5,28 @@ pipeline {
    }
   }
     stages {
-        stage('Run pods in k8s') {
+    
+        stage('Checkout Source') {
             steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'deployment.yml',
-                    enableConfigSubstitution: true
-                )
+              echo "==================CHECKOUT SOURCE==============="
+              git url: 'https://github.com/OleksiiYesin/ReactApp.git', branch: 'main'
             }
         }
+
+        stage('Deploy App') {
+            steps {
+              echo "==============DEPLOYING APPLICATION============="
+              kubernetesDeploy(configs: "react.yml", kubeconfigId: "kubeconfig")
+            }
+        }
+        
+        stage('Finish Stage') {
+            steps {
+                echo "============FINISHING SLEEP==================="
+                sh 'hostname'
+                sh 'sleep 200'
+            }
+        }        
+
     }
 }
