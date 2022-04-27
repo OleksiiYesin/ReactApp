@@ -23,7 +23,13 @@ spec:
             }
         }
         stage('deploy service') {
-            agent kubernetes
+            agent {
+              kubernetes {
+                cloud 'kubernetes'
+                namespace 'jenkins'
+              }
+            }
+
             steps {
                 sh 'kubectl get pods' 
             }
