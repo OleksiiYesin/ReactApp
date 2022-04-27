@@ -17,7 +17,6 @@ spec:
   }
    
     stages {
-    
         stage('Deploy Service') {
           agent {
             kubernetes {
@@ -37,13 +36,14 @@ spec:
   }
         }
         
-        stage('Finish Stage') {
-            steps {
+          stages('Finish Stage') {
+            stage('hostname')
+              steps {
                 echo "============FINISHING SLEEP==================="
                 sh 'hostname'
                 sh 'sleep 200'
-            }
-        }        
-
+              }
+            }        
+          }
     }
 }
