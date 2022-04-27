@@ -9,7 +9,7 @@ pipeline {
     
         stage('Deploy App') {
             steps {
-               withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://172.31.12.49:6443']) {
+               withKubeConfig([credentialsId: 'kubeconfig', ]) {
                  sh 'kubectl apply -f react.yml -n jenkins'
                }
             }
