@@ -2,10 +2,10 @@ pipeline {
     agent none
 
     stages {
-        stage("Deploy Pod") {
-          agent {
-            kubernetes {
-                    yaml '''
+      stage("Deploy Pod") {
+        agent {
+          kubernetes {
+                  yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
@@ -16,23 +16,7 @@ spec:
     image: yesinaleksey/k8s-react:v1
     ports:
     - containerPort: 80
-    
-'''
-    }
-  }
-            stages {
-               stage("build") {
-                   steps {
-                       sh "hostname"
-                   }
-               }
-
-            }
-            
-        stage("Deploy Service") {
-          agent {
-            kubernetes {
-                    yaml '''
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,20 +30,25 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
+    
 '''
     }
   }
             stages {
-               stage("build") {
-                   steps {
-                       sh "hostname"
-                       sh "sleep 150"
-                   }
-               }
-
+              stage("build") {
+                steps {
+                  sh "hostname"
+                }
+              }
+            }
+            stages {
+              stage("build") {
+                steps {
+                  sh "hostname"
+                  sh "sleep 150"
+                }
+              }
             } 
-            
         }
-   }
-}
+    }
 }
