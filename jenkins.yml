@@ -5,17 +5,25 @@ pipeline {
             agent {
               kubernetes {
                     yaml '''
-apiVersion: v1
-kind: Pod
+apiVersion : apps/v1
+kind: Deployment
 metadata:
-  name: podjs
+  name: react
 spec:
-  containers:
-  - name: reactjs
-    image: yesinaleksey/k8s-react:v1
-    ttlSecondsAfterFinished: 60
-    ports:
-    - containerPort: 80
+  replicas: 1
+  selector:
+    matchLabels:
+      project: my-pod
+  template:
+    metadata:
+      labels:
+        project: my-pod
+    spec:
+      containers:
+        - name : reactjs
+          image: yesinaleksey/k8s-react:v1
+          ports:
+            - containerPort: 80
 '''
     }
   }
