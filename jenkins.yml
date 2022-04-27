@@ -1,0 +1,17 @@
+pipeline {
+    agent {
+        kubernetes {
+            yamlFile 'tempPod.yml'
+        }
+    }
+    stages {
+        stage('Deploy ReactJS') {
+            steps {
+              container('shell') {
+                sh 'chmod u+x ./script.sh'
+                sh './script.sh'
+              }
+            }
+        }
+    }
+}
