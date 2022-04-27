@@ -1,11 +1,10 @@
 pipeline {
     agent none
-
     stages {
-      stage("Deploy Pod") {
-        agent {
-          kubernetes {
-                  yaml '''
+        stage('deploy pod') {
+            agent {
+              kubernetes {
+                    yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
@@ -19,21 +18,33 @@ spec:
 '''
     }
   }
-            stages {
-              stage("build") {
-                steps {
-                  sh "hostname"
-                }
-              }
+            steps {
+                sh 'hostname'
             }
-            stages {
-              stage("build2") {
-                steps {
-                  sh "hostname"
-                  sh "sleep 150"
-                }
-              }
-            } 
+        }
+        stage('deploy service') {
+            agent {
+              kubernetes {
+                    yaml '''
+apiVersion: v1
+kind: Service
+metadata:
+  name: react
+spec:
+  type: NodePort
+  selector:
+    project: my-pod
+  ports:
+    - name: app-listener
+      protocol: TCP
+      port: 80
+      targetPort: 80
+'''
+    }
+  }
+            steps {
+                sh 'sleep 200' 
+            }
         }
     }
 }
