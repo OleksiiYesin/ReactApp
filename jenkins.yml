@@ -13,8 +13,7 @@ spec:
   containers:
   - name: reactjs
     image: yesinaleksey/k8s-react:v1
-    command:
-    - sleep
+    ttlSecondsAfterFinished: 60
     ports:
     - containerPort: 80
 '''
