@@ -3,6 +3,7 @@ pipeline {
    kubernetes {
     namespace 'jenkins'
    }
+  }
    
     stages {
     
