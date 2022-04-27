@@ -1,19 +1,12 @@
 pipeline {
-  agent {
-   kubernetes {
-    namespace 'jenkins'
-   }
-  }
+  agent any
     stages {
     
         stage('Deploy App') {
             steps {
-                withCredentials([
-                    kubeconfigFile(
-                    credentialsId: kubeconfig)
-                ]) {
-                      sh 'kubectl apply -f react.yml -n jenkins'     
-                   }
+              script {
+                kubernetesDeploy(configs: 'react.yml', kubeconfigId: 'kubeconfig')
+              }
             }
         }
         
