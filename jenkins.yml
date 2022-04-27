@@ -32,8 +32,8 @@ spec:
     args:
     - infinity
 '''
-    }
-  }
+            }
+          }
         }
         
           stages('Finish Stage') {
