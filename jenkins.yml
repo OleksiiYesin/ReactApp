@@ -1,18 +1,40 @@
 pipeline {
   agent {
-   kubernetes {
-    namespace 'jenkins'
-   }
+    kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: shell
+    image: ubuntu
+    command:
+    - sleep
+    args:
+    - infinity
+'''
+    }
   }
    
     stages {
     
-        stage('Deploy App') {
-            steps {
-               withKubeConfig([credentialsId: 'kubeconfig', ]) {
-                 sh 'kubectl apply -f react.yml -n jenkins'
-               }
-            }
+        stage('Deploy Service') {
+          agent {
+            kubernetes {
+                    yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: shell
+    image: yesinaleksey/k8s-react:v1
+    command:
+    - sleep
+    args:
+    - infinity
+'''
+    }
+  }
         }
         
         stage('Finish Stage') {
