@@ -2,20 +2,21 @@ pipeline {
     agent none
 
     stages {
-        stage("build and test the project") {
+        stage("Deploy Pod") {
           agent {
             kubernetes {
                     yaml '''
 apiVersion: v1
 kind: Pod
+metadata:
+  name: podjs
 spec:
   containers:
-  - name: shell
-    image: ubuntu
-    command:
-    - sleep
-    args:
-    - infinity
+  - name: reactjs
+    image: yesinaleksey/k8s-react:v1
+    ports:
+    - containerPort: 80
+    
 '''
     }
   }
@@ -25,17 +26,39 @@ spec:
                        sh "hostname"
                    }
                }
-               stage("test") {
+
+            }
+            
+        stage("Deploy Service") {
+          agent {
+            kubernetes {
+                    yaml '''
+apiVersion: v1
+kind: Service
+metadata:
+  name: react
+spec:
+  type: NodePort
+  selector:
+    project: podjs
+  ports:
+    - name: app-listener
+      protocol: TCP
+      port: 80
+      targetPort: 80
+'''
+    }
+  }
+            stages {
+               stage("build") {
                    steps {
-                       sh "./test.sh"
+                       sh "hostname"
+                       sh "sleep 150"
                    }
                }
-            }
-            post {
-                success {
-                    stash name: "artifacts", includes: "artifacts/**/*"
-                }
-            }
+
+            } 
+            
         }
    }
 }
