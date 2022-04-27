@@ -23,9 +23,7 @@ spec:
             }
         }
         stage('deploy service') {
-            agent {
-              kubernetes
-            }
+            agent kubernetes
             steps {
                 sh 'kubectl get pods' 
             }
