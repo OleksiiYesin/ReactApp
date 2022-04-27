@@ -1,7 +1,11 @@
 pipeline {
-  agent {
-    kubernetes {
-            yaml '''
+    agent none
+
+    stages {
+        stage("build and test the project") {
+          agent {
+            kubernetes {
+                    yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -15,34 +19,21 @@ spec:
 '''
     }
   }
-   
-    stages {
-        stage('Deploy Service') {
-          agent {
-            kubernetes {
-                    yaml '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: shell
-    image: yesinaleksey/k8s-react:v1
-    command:
-    - sleep
-    args:
-    - infinity
-'''
+            stages {
+               stage("build") {
+                   steps {
+                       sh "hostname"
+                   }
+               }
+               stage("test") {
+                   steps {
+                       sh "./test.sh"
+                   }
+               }
             }
-          }
+            post {
+                success {
+                    stash name: "artifacts", includes: "artifacts/**/*"
+                }
+            }
         }
-        
-          stages('Finish Stage') {
-            stage('hostname')
-              steps {
-                echo "============FINISHING SLEEP==================="
-                sh 'hostname'
-                sh 'sleep 200'
-              }
-            }        
-          }
-    }
