@@ -1,39 +1,18 @@
+// Uses Declarative syntax to run commands inside a container.
 pipeline {
-    agent none
-    stages {
-        stage('deploy pod') {
-            agent {
-              kubernetes {
-                    yaml '''
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  containers:
-  - name: nginx
-    image: nginx:1.14.2
-    ports:
-    - containerPort: 80
-'''
-    }
-  }
-            steps {
-                sh 'hostname'
-            }
+    agent {
+        kubernetes {
+            namespace 'jenkins'
         }
-        stage('deploy service') {
-            agent {
-              kubernetes {
-                cloud 'kubernetes'
-                namespace 'jenkins'
-              }
-            }
-
+    }
+    stages {
+        stage('Main') {
             steps {
-              sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-              sh 'chmod u+x ./kubectl'  
-              sh './kubectl get pods'            
+                sh 'apt-get update'
+                sh 'apt-get install curl -y'
+                sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+                sh 'chmod u+x ./kubectl'  
+                sh './kubectl apply -f react.yml -n jenkins'
             }
         }
     }
