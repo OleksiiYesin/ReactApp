@@ -8,7 +8,7 @@ pipeline {
         stage('Main') {
             steps {
               container('shell') {
-                sh 'chmod u+x ./scripts.sh'
+                sh 'chmod u+x ./script.sh'
                 sh './script.sh'
               }
             }
