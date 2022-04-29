@@ -1,15 +1,14 @@
 pipeline {
     agent {
         kubernetes {
-            yamlFile 'tempPod.yml'
+          namespace 'jenkins'
         }
     }
     stages {
         stage('Deploy ReactJS') {
             steps {
               container('shell') {
-                sh 'chmod u+x ./script.sh'
-                sh './script.sh'
+                sh 'whereis kubectl'
               }
             }
         }
